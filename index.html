@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivilStruct Pro Enterprise - Structural &amp; Bridge Engineering Suite (SNI)</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles & Print Engine -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- ========================================================== -->
+  <!-- TOP HEADER / NAVBAR ENTERPRISE -->
+  <!-- ========================================================== -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 transition-all print:hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-sky-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-blue-500/25 ring-1 ring-white/20">
+          <i class="fa-solid fa-bridge-water text-white text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400 bg-clip-text text-transparent">CivilStruct Pro Enterprise</span>
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-blue-900/80 text-blue-300 border border-blue-700/60">v3.0 SNI Suite</span>
+          </div>
+          <p class="text-[11px] text-slate-400 hidden sm:block">Structural &amp; Bridge Engineering Suite &bull; SNI &bull; Kabel Pancang &amp; Jembatan Gantung UNTIDAR</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2.5">
+        <button id="btnPrintReport" class="flex items-center space-x-2 px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/25 border border-emerald-400/40 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span>Cetak Laporan (PDF)</span>
+        </button>
+
+        <button onclick="switchTab('modul-audit-sheet')" class="hidden md:flex items-center space-x-1.5 px-3 py-2 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all">
+          <i class="fa-solid fa-clipboard-check text-blue-400"></i>
+          <span>Audit Sheet</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ENTERPRISE TAB NAVIGATION -->
+    <div class="border-t border-slate-800/90 bg-slate-900/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none">
+        
+        <button onclick="switchTab('modul-balok-kolom')" id="tabBtn-modul-balok-kolom" class="nav-tab active flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all">
+          <i class="fa-solid fa-cubes-stacked text-blue-400"></i>
+          <span>Balok &amp; Kolom (SNI 2847)</span>
+        </button>
+
+        <button onclick="switchTab('modul-jembatan')" id="tabBtn-modul-jembatan" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-archway text-emerald-400"></i>
+          <span>Gelagar Jembatan (SNI 1725)</span>
+        </button>
+
+        <button onclick="switchTab('modul-kabel-pancang')" id="tabBtn-modul-kabel-pancang" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-bezier-curve text-cyan-400"></i>
+          <span>Kabel Pancang (Cable-Stayed)</span>
+        </button>
+
+        <button onclick="switchTab('modul-jembatan-gantung')" id="tabBtn-modul-jembatan-gantung" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-bridge text-indigo-400"></i>
+          <span>Jembatan Gantung (Suspension)</span>
+        </button>
+
+        <button onclick="switchTab('modul-gempa')" id="tabBtn-modul-gempa" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-house-crack text-amber-400"></i>
+          <span>Beban Gempa (SNI 1726)</span>
+        </button>
+
+        <button onclick="switchTab('modul-bbs-mto')" id="tabBtn-modul-bbs-mto" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-shapes text-purple-400"></i>
+          <span>BBS &amp; MTO / RAB</span>
+        </button>
+
+        <button onclick="switchTab('modul-audit-sheet')" id="tabBtn-modul-audit-sheet" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-file-invoice text-rose-400"></i>
+          <span>Calculation Sheet</span>
+        </button>
+
+        <button onclick="switchTab('modul-converter')" id="tabBtn-modul-converter" class="nav-tab flex items-center space-x-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all">
+          <i class="fa-solid fa-calculator text-sky-400"></i>
+          <span>Konverter Satuan</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================== -->
+  <!-- KOP SURAT RESMI CETAK (HANYA MUNCUL DI PRINT WINDOW/PDF) -->
+  <!-- ========================================================== -->
+  <div class="hidden print:block p-6 border-b-2 border-slate-900 bg-white text-slate-900">
+    <div class="flex items-center justify-between pb-4 border-b-2 border-slate-800">
+      <div class="flex items-center space-x-4">
+        <div class="w-12 h-12 bg-slate-900 text-white rounded-lg flex items-center justify-center font-black text-xl">
+          CS
+        </div>
+        <div>
+          <h1 class="text-xl font-black uppercase tracking-tight text-slate-950">CivilStruct Pro Enterprise Suite</h1>
+          <p class="text-xs text-slate-600 font-semibold">LEMBAR PERHITUNGAN STRUKTUR &amp; JEMBATAN BERBASIS SNI</p>
+          <p class="text-[10px] text-slate-500">Standar Acuan: SNI 2847:2019 &bull; SNI 1725:2016 &bull; SNI 1726:2019 &bull; Kabel Pancang &amp; Jembatan Gantung UNTIDAR</p>
+        </div>
+      </div>
+      <div class="text-right text-xs font-mono text-slate-700">
+        <div>Proyek: <strong id="printHeaderProj" class="text-slate-900">-</strong></div>
+        <div>No. Dokumen: <strong id="printHeaderDoc" class="text-slate-900">-</strong></div>
+        <div>Engineer: <strong id="printHeaderEng" class="text-slate-900">-</strong></div>
+        <div>Tanggal Cetak: <span id="printHeaderDate">-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ========================================================== -->
+    <!-- MODUL 1: BALOK & KOLOM BETON BERTULANG (SNI 2847:2019) -->
+    <!-- ========================================================== -->
+    <section id="modul-balok-kolom" class="tab-content block">
+      
+      <!-- Module Header & Preset -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">SNI 2847:2019</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Analisis Balok &amp; Kolom Beton Bertulang</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Kapasitas lentur nominal (&phi;Mn) berbasis &phi; dinamis, kapasitas geser (&phi;Vn = &phi;[Vc + Vs]), serta Kurva Interaksi P-M Kolom.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-slate-400 font-medium">Preset:</span>
+          <select id="beamPresetSelect" class="bg-slate-900 text-xs text-slate-300 border border-slate-700 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-blue-500">
+            <option value="balok-gedung">Balok Gedung (350 x 650 mm)</option>
+            <option value="kolom-lantai-1">Kolom Lantai 1 (500 x 500 mm)</option>
+            <option value="gelagar-box">Gelagar Girder (450 x 900 mm)</option>
+            <option value="kolom-portal">Kolom Portal (400 x 600 mm)</option>
+          </select>
+          <button id="btnResetBeam" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs" title="Reset Default">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Input Parameters (5 Cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-sliders text-blue-400"></i>
+              <span>Geometri, Material &amp; Beban Terfaktor</span>
+            </h3>
+
+            <div class="space-y-3.5">
+              
+              <!-- Dimensi b & h -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Lebar b (mm)</label>
+                  <input type="number" id="input_b" value="350" min="100" max="3000" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Tinggi h (mm)</label>
+                  <input type="number" id="input_h" value="650" min="100" max="4000" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Selimut & Sengkang -->
+              <div class="grid grid-cols-3 gap-2.5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Selimut (mm)</label>
+                  <input type="number" id="input_cc" value="40" min="20" max="100" step="5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Dia. Sengkang</label>
+                  <input type="number" id="input_ds" value="10" min="6" max="25" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Spasi s (mm)</label>
+                  <input type="number" id="input_s" value="150" min="50" max="400" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Mutu Bahan f'c & fy -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Mutu Beton, f'c (MPa)</label>
+                  <input type="number" id="input_fc" value="30" min="15" max="90" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Kuat Leleh, fy (MPa)</label>
+                  <input type="number" id="input_fy" value="420" min="240" max="600" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Tulangan Utama -->
+              <div class="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Tarik (nt)</label>
+                  <input type="number" id="input_nt" value="5" min="1" max="30" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-amber-400 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Tekan (nc)</label>
+                  <input type="number" id="input_nc" value="2" min="0" max="30" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-sky-400 font-mono font-bold focus:ring-2 focus:ring-sky-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Diameter D</label>
+                  <input type="number" id="input_d" value="22" min="10" max="40" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Gaya Terfaktor Mu, Vu, Pu -->
+              <div class="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-amber-400 mb-1">Mu (kNm)</label>
+                  <input type="number" id="input_mu" value="260" min="0" max="15000" step="10"
+                    class="w-full bg-slate-950 border border-amber-500/50 rounded-lg px-2.5 py-2 text-sm text-amber-300 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-blue-400 mb-1">Vu (kN)</label>
+                  <input type="number" id="input_vu" value="110" min="0" max="5000" step="5"
+                    class="w-full bg-slate-950 border border-blue-500/50 rounded-lg px-2.5 py-2 text-sm text-blue-300 font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-purple-400 mb-1">Pu (kN Tekan)</label>
+                  <input type="number" id="input_pu" value="0" min="0" max="50000" step="50"
+                    class="w-full bg-slate-950 border border-purple-500/50 rounded-lg px-2.5 py-2 text-sm text-purple-300 font-mono font-bold focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Col Right: Results, Visualizer 1 & 2 (7 Cols) -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- Safety Status Card -->
+          <div id="beamStatusCard" class="p-5 rounded-2xl border transition-all duration-300 bg-slate-900 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Verifikasi Kelayakan SNI 2847:2019</span>
+                <div class="flex items-center space-x-3 mt-1">
+                  <span id="beamStatusBadge" class="text-base sm:text-xl font-black px-3.5 py-1.5 rounded-xl tracking-wide flex items-center space-x-2">
+                    <!-- Status dinamik -->
+                  </span>
+                </div>
+                <p id="beamStatusDetail" class="text-xs text-slate-400 mt-2"></p>
+              </div>
+
+              <!-- D/C Ratio Bar -->
+              <div class="text-right sm:border-l sm:border-slate-800 sm:pl-5 min-w-[130px]">
+                <span class="text-[11px] font-medium text-slate-400">D/C Ratio (Lentur)</span>
+                <div id="beamDCRatio" class="text-2xl font-extrabold font-mono text-white mt-0.5">0.0 %</div>
+                <div class="w-full bg-slate-800 rounded-full h-2 mt-1.5 overflow-hidden">
+                  <div id="beamDCBar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 50%;"></div>
+                </div>
+                <span class="text-[10px] text-slate-500 block mt-1">D/C Geser: <strong id="beamShearRatio" class="text-slate-300">0.0%</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Kapasitas &phi;Mn</span>
+              <span id="res_phiMn" class="text-base font-bold font-mono text-emerald-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">kNm</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Kapasitas &phi;Vn</span>
+              <span id="res_phiVn" class="text-base font-bold font-mono text-blue-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN (Vc: <span id="res_vc">0</span>, Vs: <span id="res_vs">0</span>)</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Faktor &phi; Dinamis</span>
+              <span id="res_phi" class="text-base font-bold font-mono text-purple-400 mt-0.5 block">0.900</span>
+              <span class="text-[10px] text-slate-500 font-mono">&epsilon;t: <span id="res_epst">0.000</span></span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Rasio Tulangan &rho;</span>
+              <span id="res_rho" class="text-base font-bold font-mono text-amber-400 mt-0.5 block">0.0%</span>
+              <span class="text-[10px] text-slate-500 font-mono">d = <span id="res_d">0</span> mm, a = <span id="res_a">0</span></span>
+            </div>
+          </div>
+
+          <!-- Dual Visualizer: Section & P-M Diagram -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Visualizer 1: Penampang Melintang -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 p-3.5 shadow-xl">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Penampang &amp; Tulangan</span>
+                <span class="text-[10px] text-slate-500 font-mono">Cross Section</span>
+              </div>
+              <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center p-1">
+                <canvas id="beamSectionCanvas" class="w-full h-full block"></canvas>
+              </div>
+            </div>
+
+            <!-- Visualizer 2: Kurva Interaksi P-M Kolom -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 p-3.5 shadow-xl">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Kurva Interaksi P-M Kolom</span>
+                <span class="text-[10px] text-blue-400 font-mono">&phi;Pn - &phi;Mn</span>
+              </div>
+              <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center p-1">
+                <canvas id="beamPMCanvas" class="w-full h-full block"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Step-by-Step Breakdown -->
+          <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center space-x-2">
+              <i class="fa-solid fa-square-root-variable text-blue-400"></i>
+              <span>Kalkulasi Langkah-demi-Langkah SNI 2847</span>
+            </h4>
+            <div id="beamStepCalc" class="text-xs text-slate-300 space-y-2 font-mono"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL 2: ANALISIS GELAGAR JEMBATAN (SNI 1725:2016) -->
+    <!-- ========================================================== -->
+    <section id="modul-jembatan" class="tab-content hidden">
+      
+      <!-- Module Header & Preset -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">SNI 1725:2016</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Analisis Gelagar Jembatan &amp; Pembebanan Truk/Lajur</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Kombinasi Kuat I (MS, MA, BTR, BGT, Truk "TT" 500 kN, FBD/DLA), Kontrol Lendutan L/800, serta Diagram SFD &amp; BMD.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-slate-400 font-medium">Preset:</span>
+          <select id="bridgePresetSelect" class="bg-slate-900 text-xs text-slate-300 border border-slate-700 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-emerald-500">
+            <option value="gelagar-komposit-25m">Gelagar Komposit (L = 25 m)</option>
+            <option value="box-girder-35m">Box Girder (L = 35 m)</option>
+            <option value="girder-beton-20m">Girder Beton (L = 20 m)</option>
+            <option value="jpo-pejalan-kaki">Jembatan JPO (L = 16 m)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Input Parameters (5 Cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-truck-moving text-emerald-400"></i>
+              <span>Bentang &amp; Beban Standar Jembatan</span>
+            </h3>
+
+            <div class="space-y-3.5">
+              
+              <!-- Bentang L -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1 flex justify-between">
+                  <span>Panjang Bentang Gelagar, L (m)</span>
+                  <span class="text-emerald-400 font-mono">Simple Span</span>
+                </label>
+                <input type="number" id="input_br_L" value="25" min="2" max="150" step="1"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+
+              <!-- Beban Mati MS & MA -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Mati Sendiri, MS (kN/m)</label>
+                  <input type="number" id="input_br_MS" value="28" min="0" max="500" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Mati Tambahan, MA (kN/m)</label>
+                  <input type="number" id="input_br_MA" value="12" min="0" max="300" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Beban Lajur BTR & BGT -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Lajur BTR, q (kN/m)</label>
+                  <input type="number" id="input_br_q" value="32" min="0" max="300" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-blue-400 font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Garis BGT, P (kN)</label>
+                  <input type="number" id="input_br_PBGT" value="140" min="0" max="1000" step="5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-400 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Beban Truk "TT" 500 kN & DLA -->
+              <div class="pt-2 border-t border-slate-800">
+                <label class="block text-xs font-semibold text-slate-400 mb-1 flex justify-between">
+                  <span>Beban Gandar Truk "T" 500 kN (kN)</span>
+                  <span class="text-xs text-slate-500">As roda tengah/belakang</span>
+                </label>
+                <input type="number" id="input_br_PTruck" value="225" min="0" max="1000" step="5"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+
+              <!-- Modulus E & Inersia Ixx -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Modulus E (MPa)</label>
+                  <input type="number" id="input_br_E" value="200000" min="5000" max="300000" step="5000"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-purple-400 font-mono focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Inersia Ixx (m<sup>4</sup>)</label>
+                  <input type="number" id="input_br_I" value="0.048" min="0.0001" max="10" step="0.001"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-purple-400 font-mono focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Col Right: Results, Diagrams & Deflection (7 Cols) -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- Safety Status Card -->
+          <div id="bridgeStatusCard" class="p-5 rounded-2xl border transition-all duration-300 bg-slate-900 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Kontrol Lendutan Izin Jembatan (SNI 1725:2016)</span>
+                <div class="flex items-center space-x-3 mt-1">
+                  <span id="bridgeStatusBadge" class="text-base sm:text-xl font-black px-3.5 py-1.5 rounded-xl tracking-wide flex items-center space-x-2"></span>
+                </div>
+                <p id="bridgeStatusDetail" class="text-xs text-slate-400 mt-2"></p>
+              </div>
+
+              <div class="text-right sm:border-l sm:border-slate-800 sm:pl-5 min-w-[130px]">
+                <span class="text-[11px] font-medium text-slate-400">&delta; / &delta;ijin (L/800)</span>
+                <div id="bridgeDeflRatio" class="text-2xl font-extrabold font-mono text-white mt-0.5">0.0 %</div>
+                <div class="w-full bg-slate-800 rounded-full h-2 mt-1.5 overflow-hidden">
+                  <div id="bridgeDeflBar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 50%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Momen Maks (Mu)</span>
+              <span id="res_br_Mu" class="text-base font-bold font-mono text-amber-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">kNm</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Geser Maks (Vu)</span>
+              <span id="res_br_Vu" class="text-base font-bold font-mono text-blue-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Lendutan Aktual</span>
+              <span id="res_br_delta" class="text-base font-bold font-mono text-purple-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">mm</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Lendutan Izin</span>
+              <span id="res_br_delta_ijin" class="text-base font-bold font-mono text-emerald-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">mm (DLA: <span id="res_br_dla">0%</span>)</span>
+            </div>
+          </div>
+
+          <!-- Canvas SFD / BMD -->
+          <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Diagram Gaya Dalam &amp; Profil Lendutan</span>
+              <span class="text-[11px] text-slate-500 font-mono">Hover kursor untuk nilai x</span>
+            </div>
+            <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 p-2">
+              <canvas id="bridgeCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+              <div id="canvasTooltip" class="absolute hidden pointer-events-none bg-slate-900/95 border border-slate-700 text-[11px] font-mono text-slate-200 px-3 py-2 rounded-lg shadow-2xl z-30"></div>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Breakdown -->
+          <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center space-x-2">
+              <i class="fa-solid fa-calculator text-emerald-400"></i>
+              <span>Kalkulasi Langkah-demi-Langkah SNI 1725</span>
+            </h4>
+            <div id="bridgeStepCalc" class="text-xs text-slate-300 space-y-2 font-mono"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL BARU: ANALISIS ITERATIF JEMBATAN KABEL PANCANG (UNTIDAR) -->
+    <!-- ========================================================== -->
+    <section id="modul-kabel-pancang" class="tab-content hidden">
+      
+      <!-- Module Header & Preset -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">METODE PRAKTIKUM UNTIDAR</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Analisis Iteratif Jembatan Kabel Pancang (Cable-Stayed Bridge)</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Metode Iterasi Beban Terbagi Rata Gelagar Menuju Pilar &bull; Perhitungan Posisi Titik Simpul, Sudut Kabel, Tinggi Pilar &amp; Kebutuhan Kabel 4 Sisi Jembatan.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-slate-400 font-medium">Preset:</span>
+          <select id="csPresetSelect" class="bg-slate-900 text-xs text-slate-300 border border-slate-700 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-cyan-500">
+            <option value="untidar-standar">Standar Praktikum UNTIDAR (L=450m, D=60mm, q=10)</option>
+            <option value="suramadu-scale">Skala Jembatan Suramadu (L=434m, D=75mm, q=14)</option>
+            <option value="barelang-scale">Skala Jembatan Barelang (L=350m, D=65mm, q=12)</option>
+            <option value="pedestrian-cable">Jembatan Pejalan Kaki (L=150m, D=35mm, q=4.5)</option>
+          </select>
+          <button id="btnResetCS" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs" title="Reset Default">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Input Parameters (5 Cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-sliders text-cyan-400"></i>
+              <span>Parameter Desain Kabel &amp; Bentang Jembatan</span>
+            </h3>
+
+            <div class="space-y-3.5">
+              
+              <!-- Diameter Kabel & Tegangan Ijin -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Diameter Kabel Utama, <span class="text-cyan-400 font-mono">D</span> (mm)
+                  </label>
+                  <input type="number" id="input_cs_diameter" value="60" min="10" max="250" step="5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-cyan-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Default: 60 mm</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Tegangan Ijin Baja, <span class="text-cyan-400 font-mono">&sigma;s</span> (MPa)
+                  </label>
+                  <input type="number" id="input_cs_sigmas" value="160" min="20" max="1500" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-cyan-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Default: 160 MPa</span>
+                </div>
+              </div>
+
+              <!-- Beban Merata Gelagar & Sudut Kabel Terluar -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Beban Merata Gelagar, <span class="text-amber-400 font-mono">q</span> (kN/m')
+                  </label>
+                  <input type="number" id="input_cs_q" value="10" min="0.1" max="150" step="0.5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-300 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Beban tetap gelagar (kN/m)</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Sudut Kabel Terluar, <span class="text-emerald-400 font-mono">&alpha;1</span> (&deg;)
+                  </label>
+                  <input type="number" id="input_cs_alpha1" value="45" min="20" max="80" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Default: 45 derajat</span>
+                </div>
+              </div>
+
+              <!-- Bentang Utama Tengah & Bentang Tepi -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Bentang Utama, <span class="text-blue-400 font-mono">L_main</span> (m)
+                  </label>
+                  <input type="number" id="input_cs_lmain" value="450" min="30" max="2000" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-blue-300 font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Bentang tengah antar pylon</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Bentang Tepi, <span class="text-blue-400 font-mono">L_side</span> (m)
+                  </label>
+                  <input type="number" id="input_cs_lside" value="225" min="15" max="1000" step="5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-blue-300 font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Bentang sisi kiri &amp; kanan</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Formula Rujukan Praktikum UNTIDAR -->
+          <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-800/80 text-xs text-slate-400 space-y-1.5 font-mono">
+            <div class="text-slate-200 font-sans font-semibold mb-1 flex items-center space-x-1.5">
+              <i class="fa-solid fa-graduation-cap text-cyan-400"></i>
+              <span>Metode Analisis Praktikum UNTIDAR</span>
+            </div>
+            <div>&bull; P_kabel = &sigma;s &times; [0.25 &times; &pi; &times; (D/1000)&sup2;] &times; 1000 [kN]</div>
+            <div>&bull; H_pilar = tan(&alpha;1) &times; (L_main / 2) [m]</div>
+            <div>&bull; &Delta;L_i = (P_kabel &times; sin(&alpha;i)) / q [m]</div>
+            <div>&bull; x_{i+1} = x_i - &Delta;L_i &nbsp;|&nbsp; &alpha;_{i+1} = arctan(H_pilar / x_{i+1})</div>
+            <div>&bull; L_kabel_i = &radic;(H_pilar&sup2; + x_i&sup2;) [m]</div>
+            <div>&bull; Stop Iterasi: ketika x_i &lt; &Delta;L_i (atau x_i &le; 0)</div>
+          </div>
+        </div>
+
+        <!-- Col Right: Results, Visualizer & Iteration Table (7 Cols) -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- Safety Status Card -->
+          <div class="p-5 rounded-2xl border transition-all duration-300 bg-slate-900 border-cyan-500/30 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Hasil Analisis Iteratif Jembatan Kabel Pancang</span>
+                <div class="flex items-center space-x-3 mt-1">
+                  <span id="csStatusBadge" class="text-base sm:text-xl font-black px-3.5 py-1.5 rounded-xl tracking-wide flex items-center space-x-2"></span>
+                </div>
+                <p id="csStatusDetail" class="text-xs text-slate-400 mt-2"></p>
+              </div>
+
+              <div class="text-right sm:border-l sm:border-slate-800 sm:pl-5 min-w-[140px]">
+                <span class="text-[11px] font-medium text-slate-400">Total Kabel 4 Sisi</span>
+                <div id="res_cs_len4sides" class="text-xl sm:text-2xl font-black font-mono text-cyan-400 mt-0.5">0.00</div>
+                <span class="text-[10px] text-slate-500 font-mono">meter</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Tinggi Pilar (H)</span>
+              <span id="res_cs_hpilar" class="text-base font-bold font-mono text-blue-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">m (Di atas gelagar)</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Kapasitas P_kabel</span>
+              <span id="res_cs_pkabel" class="text-base font-bold font-mono text-emerald-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN / kabel</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Jumlah Kabel</span>
+              <span id="res_cs_numcables" class="text-base font-bold font-mono text-amber-400 mt-0.5 block">0</span>
+              <span class="text-[10px] text-slate-500 font-mono">per sisi pylon</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Panjang 1 Sisi</span>
+              <span id="res_cs_len1side" class="text-base font-bold font-mono text-purple-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">m (&Sigma; L_kabel)</span>
+            </div>
+          </div>
+
+          <!-- Visualizer Canvas: 2-Pylon Cable Stayed Bridge -->
+          <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-bridge-water text-cyan-400"></i>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Visualisasi Struktur Jembatan Kabel Pancang 2-Pylon</span>
+              </div>
+              <button id="btnDownloadCSCanvas" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center space-x-1 font-medium transition-colors">
+                <i class="fa-solid fa-download"></i>
+                <span>Unduh Gambar</span>
+              </button>
+            </div>
+
+            <div class="relative w-full aspect-[16/9] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 p-1">
+              <canvas id="cableStayedCanvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <!-- Legend Elemen Jembatan -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2.5 text-[11px] text-slate-400 border-t border-slate-800/80">
+              <div class="flex flex-wrap items-center gap-3">
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-red-500 mr-1.5"></span> 2 Pylon Merah (H = <span id="res_cs_weight" class="text-slate-300 font-bold ml-1">-</span>)</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1.5"></span> Gelagar Hijau</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 mr-1.5"></span> Abutment Kuning</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-teal-500 mr-1.5"></span> Sungai Teal</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-slate-900 border border-white mr-1.5"></span> Kabel Hitam</span>
+              </div>
+              <span class="text-slate-500 font-mono">Skala Proporsional Otomatis</span>
+            </div>
+          </div>
+
+          <!-- Tabel Hasil Iterasi Kabel Lengkap -->
+          <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-table-list text-cyan-400"></i>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">Tabel Hasil Iterasi Kabel Pancang (Dari Luar Menuju Pilar)</h3>
+              </div>
+              <span class="text-[11px] text-slate-400 font-mono">Metode UNTIDAR</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr class="border-b border-slate-800 text-slate-400 font-sans">
+                    <th class="py-2.5 px-3 text-center">Kabel No</th>
+                    <th class="py-2.5 px-3">Sudut &alpha; (&deg;)</th>
+                    <th class="py-2.5 px-3 text-amber-400">&Delta;L Pikul (m)</th>
+                    <th class="py-2.5 px-3 text-emerald-400">Jarak Pilar x_i (m)</th>
+                    <th class="py-2.5 px-3 text-purple-300">Panjang Kabel (m)</th>
+                  </tr>
+                </thead>
+                <tbody id="csTableBody" class="divide-y divide-slate-800/60"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Breakdown -->
+          <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center space-x-2">
+              <i class="fa-solid fa-calculator text-cyan-400"></i>
+              <span>Langkah-demi-Langkah Perhitungan Kabel Pancang</span>
+            </h4>
+            <div id="csStepCalc" class="text-xs text-slate-300 space-y-2 font-mono"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL BARU: ANALISIS JEMBATAN GANTUNG (SUSPENSION BRIDGE - UNTIDAR) -->
+    <!-- ========================================================== -->
+    <section id="modul-jembatan-gantung" class="tab-content hidden">
+      
+      <!-- Module Header & Preset -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">METODE PRAKTIKUM UNTIDAR</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Analisis Jembatan Gantung (Suspension Bridge)</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Formulasi Analitis Kabel Utama Parabolik, Kabel Tepi (Backstay), Gaya Tarik Maksimum, Dimensi Diameter Kabel, &amp; Sudut Kritis Keseimbangan.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-slate-400 font-medium">Preset:</span>
+          <select id="sbPresetSelect" class="bg-slate-900 text-xs text-slate-300 border border-slate-700 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-indigo-500">
+            <option value="untidar-standar">Standar Praktikum UNTIDAR (L=45m, f=9m, q=10)</option>
+            <option value="golden-gate-scale">Skala Golden Gate (L=120m, f=15m, q=25)</option>
+            <option value="akashi-scale">Skala Akashi Kaikyo (L=180m, f=20m, q=35)</option>
+            <option value="pedestrian-suspension">Jembatan Gantung Pejalan Kaki (L=30m, f=3.5m, q=5)</option>
+          </select>
+          <button id="btnResetSB" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs" title="Reset Default">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Input Parameters (5 Cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-sliders text-indigo-400"></i>
+              <span>Parameter Beban &amp; Geometri Kabel Gantung</span>
+            </h3>
+
+            <div class="space-y-3.5">
+              
+              <!-- Beban Merata q & Tegangan Ijin sigma_s -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Beban Merata Gelagar, <span class="text-amber-400 font-mono">q</span> (kN/m')
+                  </label>
+                  <input type="number" id="input_sb_q" value="10" min="0.1" max="200" step="0.5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-300 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Default: 10 kN/m'</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Tegangan Ijin Kabel, <span class="text-cyan-400 font-mono">&sigma;s</span> (MPa)
+                  </label>
+                  <input type="number" id="input_sb_sigmas" value="160" min="20" max="1500" step="10"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-cyan-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Default: 160 MPa</span>
+                </div>
+              </div>
+
+              <!-- Bentang Utama L & Sag f -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Bentang Utama, <span class="text-blue-400 font-mono">L</span> (m)
+                  </label>
+                  <input type="number" id="input_sb_L" value="45" min="5" max="1000" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-blue-300 font-mono font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Default: 45 m</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Sag / Lendutan, <span class="text-emerald-400 font-mono">f</span> (m)
+                  </label>
+                  <input type="number" id="input_sb_f" value="9" min="0.5" max="200" step="0.5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400 font-mono font-bold focus:ring-2 focus:ring-emerald-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Lendutan kabel tengah (9 m)</span>
+                </div>
+              </div>
+
+              <!-- Sudut Kemiringan Kabel Tepi alpha & Jarak x_tepi -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Sudut Kabel Tepi, <span class="text-indigo-400 font-mono">&alpha;</span> (&deg;)
+                  </label>
+                  <input type="number" id="input_sb_alpha" value="45" min="15" max="80" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-indigo-300 font-mono font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Backstay (Default: 45&deg;)</span>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">
+                    Jarak Horisontal, <span class="text-purple-400 font-mono">x_tepi</span> (m)
+                  </label>
+                  <input type="number" id="input_sb_xtepi" value="10" min="2" max="500" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-purple-300 font-mono font-bold focus:ring-2 focus:ring-purple-500 outline-none">
+                  <span class="text-[10px] text-slate-500">Pilar ke abutment (10 m)</span>
+                </div>
+              </div>
+
+              <!-- Tinggi Pilar di atas Gelagar h_pilar -->
+              <div class="pt-2 border-t border-slate-800">
+                <label class="block text-xs font-semibold text-slate-400 mb-1 flex justify-between">
+                  <span>Tinggi Pilar Di Atas Gelagar, <span class="text-rose-400 font-mono">h_pilar</span> (m)</span>
+                  <span class="text-xs text-rose-400 font-mono">Pylon Tower</span>
+                </label>
+                <input type="number" id="input_sb_hpilar" value="10" min="2" max="300" step="0.5"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-rose-300 font-mono font-bold focus:ring-2 focus:ring-rose-500 outline-none">
+                <span class="text-[10px] text-slate-500">Tinggi sadel kabel pilar dari elevasi lantai gelagar (10 m)</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Formula Ringkas Praktikum UNTIDAR -->
+          <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-800/80 text-xs text-slate-400 space-y-1.5 font-mono">
+            <div class="text-slate-200 font-sans font-semibold mb-1 flex items-center space-x-1.5">
+              <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
+              <span>Formulasi Jembatan Gantung UNTIDAR</span>
+            </div>
+            <div>&bull; n = f / L &nbsp;|&nbsp; H = (q &times; L&sup2;) / (8 &times; f) [kN]</div>
+            <div>&bull; T = H &times; &radic;(1 + 16 &times; n&sup2;) [kN]</div>
+            <div>&bull; T* = H / cos(&alpha;) [kN]</div>
+            <div>&bull; d = &radic;(4&times;A / &pi;) &times; 1000 [mm] (dibulatkan ke atas mm)</div>
+            <div>&bull; Ltengah = L &times; (1 + 8/3 &times; n&sup2;) &nbsp;|&nbsp; Ltepi = &radic;(x_tepi&sup2; + h_pilar&sup2;)</div>
+            <div>&bull; &alpha;_kritis = arccos(H / T) [derajat]</div>
+          </div>
+        </div>
+
+        <!-- Col Right: Results, Visualizer & Breakdown (7 Cols) -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- Safety Status Card -->
+          <div class="p-5 rounded-2xl border transition-all duration-300 bg-slate-900 border-indigo-500/30 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Status Keseimbangan Kabel Gantung (Suspension Cable)</span>
+                <div class="flex items-center space-x-3 mt-1">
+                  <span id="sbStatusBadge" class="text-base sm:text-xl font-black px-3.5 py-1.5 rounded-xl tracking-wide flex items-center space-x-2"></span>
+                </div>
+                <p id="sbStatusDetail" class="text-xs text-slate-400 mt-2"></p>
+              </div>
+
+              <div class="text-right sm:border-l sm:border-slate-800 sm:pl-5 min-w-[140px]">
+                <span class="text-[11px] font-medium text-slate-400">Sudut Kritis Ideal</span>
+                <div id="res_sb_alphakritis" class="text-xl sm:text-2xl font-black font-mono text-cyan-400 mt-0.5">0.00°</div>
+                <span id="res_sb_sagratio" class="text-[10px] text-slate-400 font-mono block mt-0.5">n = 0.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Gaya Horisontal H</span>
+              <span id="res_sb_H" class="text-base font-bold font-mono text-blue-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN (Komponen H)</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Tarik Maks Utama (T)</span>
+              <span id="res_sb_T" class="text-base font-bold font-mono text-emerald-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN / kabel tengah</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Tarik Kabel Tepi (T*)</span>
+              <span id="res_sb_Tstar" class="text-base font-bold font-mono text-amber-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN / kabel backstay</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Total Panjang Kabel</span>
+              <span id="res_sb_ltotal" class="text-base font-bold font-mono text-purple-400 mt-0.5 block">0.00</span>
+              <span class="text-[10px] text-slate-500 font-mono">m (2&times;Ltepi + Ltengah)</span>
+            </div>
+          </div>
+
+          <!-- Detail Diameter & Panjang Kabel -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-slate-400 block">Kabel Utama Tengah:</span>
+                <span id="res_sb_dtengah" class="text-sm font-bold font-mono text-white mt-0.5 block">- mm</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-slate-500">Panjang Bentang Tengah:</span>
+                <span class="text-xs font-mono text-emerald-400 font-bold block"><span id="res_sb_ltengah">0.00</span> m</span>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-slate-400 block">Kabel Tepi / Backstay:</span>
+                <span id="res_sb_dtepi" class="text-sm font-bold font-mono text-white mt-0.5 block">- mm</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-slate-500">Panjang 1 Sisi Tepi:</span>
+                <span class="text-xs font-mono text-amber-400 font-bold block"><span id="res_sb_ltepi">0.00</span> m</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visualizer Canvas: Suspension Bridge -->
+          <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-bridge text-indigo-400"></i>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Visualisasi Struktur Jembatan Gantung (Suspension Bridge)</span>
+              </div>
+              <button id="btnDownloadSBCanvas" class="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center space-x-1 font-medium transition-colors">
+                <i class="fa-solid fa-download"></i>
+                <span>Unduh Gambar</span>
+              </button>
+            </div>
+
+            <div class="relative w-full aspect-[16/9] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 p-1">
+              <canvas id="suspensionBridgeCanvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <!-- Legend Elemen Jembatan -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2.5 text-[11px] text-slate-400 border-t border-slate-800/80">
+              <div class="flex flex-wrap items-center gap-3">
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-red-500 mr-1.5"></span> 2 Pilar Pylon Merah</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-white mr-1.5"></span> Kabel Utama Parabola</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 mr-1.5"></span> Kabel Tepi Backstay</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 mr-1.5"></span> Hangers Vertikal</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1.5"></span> Gelagar Hijau</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 mr-1.5"></span> Abutment Kuning</span>
+                <span class="inline-flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-teal-500 mr-1.5"></span> Sungai Teal</span>
+              </div>
+              <span class="text-slate-500 font-mono">Skala Parabola Presisi</span>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Breakdown -->
+          <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center space-x-2">
+              <i class="fa-solid fa-calculator text-indigo-400"></i>
+              <span>Langkah-demi-Langkah Perhitungan Jembatan Gantung</span>
+            </h4>
+            <div id="sbStepCalc" class="text-xs text-slate-300 space-y-2 font-mono"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL 3: BEBAN GEMPA STATIK EKUIVALEN (SNI 1726:2019) -->
+    <!-- ========================================================== -->
+    <section id="modul-gempa" class="tab-content hidden">
+      
+      <!-- Module Header & Preset -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">SNI 1726:2019</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Beban Gempa Statik Ekuivalen Bangunan Gedung</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Koefisien Situs Fa &amp; Fv, Spektrum Desain SDS &amp; SD1, Kategori Desain Seismik (KDS A-F), serta Distribusi Gaya Lateral Fx.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-slate-400 font-medium">Preset Wilayah:</span>
+          <select id="seismicPresetSelect" class="bg-slate-900 text-xs text-slate-300 border border-slate-700 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-amber-500">
+            <option value="jakarta-sedang">Jakarta (Tanah Sedang SD)</option>
+            <option value="padang-keras">Padang (Tanah Keras SC)</option>
+            <option value="surabaya-lunak">Surabaya (Tanah Lunak SE)</option>
+            <option value="bandung-sedang">Bandung (Tanah Sedang SD)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Input Parameters (5 Cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-earth-americas text-amber-400"></i>
+              <span>Parameter Seismik &amp; Gedung</span>
+            </h3>
+
+            <div class="space-y-3.5">
+              
+              <!-- Situs Tanah & Kategori Risiko -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Kelas Situs Tanah</label>
+                  <select id="input_eq_site" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+                    <option value="SA">SA - Batuan Keras</option>
+                    <option value="SB">SB - Batuan</option>
+                    <option value="SC">SC - Tanah Sangat Padat</option>
+                    <option value="SD" selected>SD - Tanah Sedang</option>
+                    <option value="SE">SE - Tanah Lunak</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Kategori Risiko</label>
+                  <select id="input_eq_risk" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+                    <option value="II" selected>Risiko II (Ie = 1.0)</option>
+                    <option value="III">Risiko III (Ie = 1.25)</option>
+                    <option value="IV">Risiko IV (Ie = 1.50)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Parameter Ss & S1 -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Ss (Periode 0.2s)</label>
+                  <input type="number" id="input_eq_ss" value="0.85" min="0.05" max="3.0" step="0.05"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-400 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">S1 (Periode 1.0s)</label>
+                  <input type="number" id="input_eq_s1" value="0.38" min="0.02" max="2.0" step="0.02"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-400 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Faktor R & Jumlah Lantai -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Faktor R (SRPMK=8)</label>
+                  <input type="number" id="input_eq_r" value="8.0" min="1.0" max="10.0" step="0.5"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Jumlah Lantai (N)</label>
+                  <input type="number" id="input_eq_stories" value="8" min="1" max="40" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Tinggi Lantai & Berat Total Gedung -->
+              <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Tinggi Tingkat (m)</label>
+                  <input type="number" id="input_eq_hstory" value="3.8" min="2.5" max="8.0" step="0.1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Berat Total W (kN)</label>
+                  <input type="number" id="input_eq_wtotal" value="24000" min="500" max="500000" step="1000"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Col Right: Results, Elevation Canvas & Story Table (7 Cols) -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- Seismic Status Card -->
+          <div id="seismicStatusCard" class="p-5 rounded-2xl border transition-all duration-300 bg-slate-900 border-blue-500/30 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Parameter Spektra Gempa SNI 1726:2019</span>
+                <div class="flex items-center space-x-3 mt-1">
+                  <span id="seismicStatusBadge" class="text-base sm:text-xl font-black px-3.5 py-1.5 rounded-xl tracking-wide flex items-center space-x-2"></span>
+                </div>
+                <p id="seismicStatusDetail" class="text-xs text-slate-400 mt-2"></p>
+              </div>
+
+              <div class="text-right sm:border-l sm:border-slate-800 sm:pl-5 min-w-[130px]">
+                <span class="text-[11px] font-medium text-slate-400">Kategori Seismik</span>
+                <div id="res_eq_kds" class="text-2xl font-black font-mono text-amber-400 mt-0.5">KDS D</div>
+                <span class="text-[10px] text-slate-500 block mt-1">Ta = <strong id="res_eq_ta" class="text-slate-300">0.0 s</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Koefisien Fa / Fv</span>
+              <span class="text-base font-bold font-mono text-white mt-0.5 block"><span id="res_eq_fa">0</span> / <span id="res_eq_fv">0</span></span>
+              <span class="text-[10px] text-slate-500 font-mono">Tabel 5 &amp; 6 SNI</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Spektrum SDS / SD1</span>
+              <span class="text-base font-bold font-mono text-amber-400 mt-0.5 block"><span id="res_eq_sds">0</span> / <span id="res_eq_sd1">0</span></span>
+              <span class="text-[10px] text-slate-500 font-mono">g (Akselerasi Desain)</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Koefisien Seismik Cs</span>
+              <span id="res_eq_cs" class="text-base font-bold font-mono text-purple-400 mt-0.5 block">0.000</span>
+              <span class="text-[10px] text-slate-500 font-mono">Cs Terpakai</span>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+              <span class="text-[10px] font-medium text-slate-400 block uppercase">Geser Dasar Total (V)</span>
+              <span id="res_eq_vbase" class="text-base font-bold font-mono text-blue-400 mt-0.5 block">0.0</span>
+              <span class="text-[10px] text-slate-500 font-mono">kN (Base Shear)</span>
+            </div>
+          </div>
+
+          <!-- Building Elevation Canvas & Story Shear Table -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <!-- Canvas Elevasi Gedung (7 Cols) -->
+            <div class="md:col-span-7 bg-slate-900 rounded-2xl border border-slate-800 p-3.5 shadow-xl">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Elevasi Gedung &amp; Vektor Fx</span>
+                <span class="text-[10px] text-slate-500 font-mono">2D Frame Model</span>
+              </div>
+              <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 p-1 flex items-center justify-center">
+                <canvas id="seismicCanvas" class="w-full h-full block"></canvas>
+              </div>
+            </div>
+
+            <!-- Story Table (5 Cols) -->
+            <div class="md:col-span-5 bg-slate-900 rounded-2xl border border-slate-800 p-3.5 shadow-xl flex flex-col">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Gaya Tingkat (Fx &amp; Vx)</span>
+                <span class="text-[10px] text-emerald-400 font-mono">Distrib. Vertikal</span>
+              </div>
+              <div class="overflow-y-auto max-h-[260px] scrollbar-thin">
+                <table class="w-full text-left text-[11px] font-mono">
+                  <thead>
+                    <tr class="text-slate-400 border-b border-slate-800 font-sans">
+                      <th class="py-1.5 px-2">Lantai</th>
+                      <th class="py-1.5 px-2">Tinggi</th>
+                      <th class="py-1.5 px-2">Wi</th>
+                      <th class="py-1.5 px-2 text-emerald-400">Fx (kN)</th>
+                      <th class="py-1.5 px-2 text-blue-400">Vx (kN)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="seismicStoryTableBody" class="divide-y divide-slate-800/60"></tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Step-by-Step Breakdown -->
+          <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center space-x-2">
+              <i class="fa-solid fa-calculator text-amber-400"></i>
+              <span>Kalkulasi Langkah-demi-Langkah SNI 1726</span>
+            </h4>
+            <div id="seismicStepCalc" class="text-xs text-slate-300 space-y-2 font-mono"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL 4: BAR BENDING SCHEDULE (BBS) & MTO / RAB -->
+    <!-- ========================================================== -->
+    <section id="modul-bbs-mto" class="tab-content hidden">
+      
+      <!-- Module Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">MATERIAL ESTIMATOR</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Bar Bending Schedule (BBS) &amp; Material Take-Off (RAB)</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Perhitungan berat baja presisi BJ = 0.006165 &times; D&sup2; &times; L, Shape Code 00, 11, 51, Volume Beton, Bekisting &amp; Estimasi RAB.</p>
+        </div>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Form Tambah Item & Unit Prices (4 Cols) -->
+        <div class="lg:col-span-4 space-y-5">
+          
+          <!-- Tambah Baris BBS -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-plus-circle text-purple-400"></i>
+              <span>Input Tulangan BBS Baru</span>
+            </h3>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Elemen Struktur</label>
+                <input type="text" id="input_bbs_elem" value="Balok B2 Lantai 2"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:ring-2 focus:ring-purple-500 outline-none">
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Shape Code</label>
+                  <select id="input_bbs_shape" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:ring-2 focus:ring-purple-500 outline-none">
+                    <option value="00">Shape 00 (Lurus)</option>
+                    <option value="11">Shape 11 (Sengkang)</option>
+                    <option value="51">Shape 51 (Bengkok L)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Diameter D (mm)</label>
+                  <input type="number" id="input_bbs_d" value="16" min="6" max="40" step="1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+              </div>
+
+              <!-- Sketsa Canvas Shape -->
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-800 flex flex-col items-center">
+                <span class="text-[10px] text-slate-500 mb-1">Sketsa Geometri Shape Code</span>
+                <canvas id="bbsShapeCanvas" class="w-full h-24 block"></canvas>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Dimensi A (m)</label>
+                  <input type="number" id="input_bbs_dimA" value="5.5" min="0.1" max="100" step="0.1"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1">Dimensi B (m)</label>
+                  <input type="number" id="input_bbs_dimB" value="0.5" min="0" max="100" step="0.05"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Jumlah Batang (Qty)</label>
+                <input type="number" id="input_bbs_qty" value="6" min="1" max="5000" step="1"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-purple-500 outline-none">
+              </div>
+
+              <button id="btnAddBbsRow" class="w-full py-2 px-4 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-all shadow-lg shadow-purple-600/30 flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>Tambahkan ke Tabel BBS</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Unit Prices Estimator RAB -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 pb-2 border-b border-slate-800 flex items-center space-x-2">
+              <i class="fa-solid fa-money-bill-wave text-emerald-400"></i>
+              <span>Harga Satuan Proyek (RAB)</span>
+            </h3>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Beton Struktural (Rp / m&sup3;)</label>
+                <input type="number" id="input_price_concrete" value="1200000" step="50000"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Baja Tulangan (Rp / kg)</label>
+                <input type="number" id="input_price_steel" value="16000" step="500"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Bekisting Permukaan (Rp / m&sup2;)</label>
+                <input type="number" id="input_price_formwork" value="190000" step="10000"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Col Right: Table BBS & Total Cards (8 Cols) -->
+        <div class="lg:col-span-8 space-y-5">
+          
+          <!-- Summary Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase font-sans">Total Berat Baja</span>
+              <div class="text-lg font-bold font-mono text-amber-400 mt-0.5"><span id="res_mto_steel_kg">0</span> kg</div>
+              <span class="text-[10px] text-slate-500 font-mono"><span id="res_mto_steel_ton">0</span> Ton</span>
+            </div>
+
+            <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase font-sans">Volume Beton</span>
+              <div class="text-lg font-bold font-mono text-blue-400 mt-0.5"><span id="res_mto_concrete_m3">0</span> m&sup3;</div>
+              <span class="text-[10px] text-slate-500 font-mono">Cor Struktural</span>
+            </div>
+
+            <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase font-sans">Luas Bekisting</span>
+              <div class="text-lg font-bold font-mono text-purple-400 mt-0.5"><span id="res_mto_formwork_m2">0</span> m&sup2;</div>
+              <span class="text-[10px] text-slate-500 font-mono">Area Kontak</span>
+            </div>
+
+            <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase font-sans">Estimasi Total RAB</span>
+              <div id="res_mto_total_cost" class="text-sm sm:text-base font-extrabold font-mono text-emerald-400 mt-0.5">Rp 0</div>
+              <span class="text-[10px] text-slate-500 font-mono">Material &amp; Fabrikasi</span>
+            </div>
+          </div>
+
+          <!-- Tabel Bar Bending Schedule -->
+          <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-list-check text-purple-400"></i>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">Tabel Bar Bending Schedule (BBS)</h3>
+              </div>
+              <span class="text-[11px] text-slate-400 font-mono">Standar Rumus: BJ = 0.006165 &times; D&sup2; &times; L</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr class="border-b border-slate-800 text-slate-400 font-sans">
+                    <th class="py-2 px-3">Elemen</th>
+                    <th class="py-2 px-3">Shape</th>
+                    <th class="py-2 px-3">Dia.</th>
+                    <th class="py-2 px-3">Cut Length</th>
+                    <th class="py-2 px-3">Qty</th>
+                    <th class="py-2 px-3">Panjang</th>
+                    <th class="py-2 px-3 text-amber-400">Berat</th>
+                    <th class="py-2 px-3 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="bbsTableBody" class="divide-y divide-slate-800/60"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL 5: CALCULATION SHEET GENERATOR & AUDIT -->
+    <!-- ========================================================== -->
+    <section id="modul-audit-sheet" class="tab-content hidden">
+      
+      <!-- Module Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">AUDIT ENGINE</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Calculation Sheet Generator &amp; Audit Rekayasa</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Laporan verifikasi numerik langkah-demi-langkah (Step-by-Step), limitasi SNI, dan persiapan cetak dokumen resmi.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <button id="btnRefreshAudit" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-all flex items-center space-x-1.5">
+            <i class="fa-solid fa-arrows-rotate text-blue-400"></i>
+            <span>Refresh Audit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings Proyek Card -->
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl mb-6">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 pb-2 border-b border-slate-800 flex items-center space-x-2">
+          <i class="fa-solid fa-building-user text-blue-400"></i>
+          <span>Metadata Dokumen Perhitungan Struktur</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Proyek / Struktur</label>
+            <input type="text" id="input_proj_name" value="Pembangunan Gedung Kantor &amp; Jembatan Akses"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Nomor Laporan / Dokumen</label>
+            <input type="text" id="input_proj_docno" value="CSP-SNI-2026-CALC-001"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Structural Engineer</label>
+            <input type="text" id="input_proj_engineer" value="Ir. Devan Pratama, S.T., M.T., IPM."
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Calculation Audit Sheet Preview -->
+      <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center space-x-2">
+            <i class="fa-solid fa-file-contract text-emerald-400"></i>
+            <span>Lembar Verifikasi Numerik (Design Verification Sheet)</span>
+          </h3>
+          <span class="text-xs text-slate-400 font-mono">Format SNI Terakreditasi</span>
+        </div>
+
+        <!-- Konten Audit Dinamik -->
+        <div id="calcSheetAuditContent" class="space-y-6"></div>
+
+        <!-- Kolom Tanda Tangan Resmi (Tampil di web & cetak) -->
+        <div class="mt-8 pt-6 border-t border-slate-800/80">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center">Lembar Pengesahan Perhitungan Struktur (Approval Sheet)</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center text-xs font-mono">
+            <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+              <span class="text-slate-400 block font-sans">Disiapkan Oleh:</span>
+              <span class="font-bold text-white block mt-1">Structural Engineer</span>
+              <div class="h-16 flex items-center justify-center text-slate-600 italic">(Tanda Tangan)</div>
+              <div class="border-t border-slate-800 pt-2 text-slate-300 font-semibold">Ir. Devan Pratama, S.T.</div>
+              <span class="text-[10px] text-slate-500">SKA HAKI / PII No. 1042-99</span>
+            </div>
+
+            <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+              <span class="text-slate-400 block font-sans">Diperiksa Oleh:</span>
+              <span class="font-bold text-white block mt-1">Lead Structural Checker</span>
+              <div class="h-16 flex items-center justify-center text-slate-600 italic">(Tanda Tangan)</div>
+              <div class="border-t border-slate-800 pt-2 text-slate-300 font-semibold">Dr. Hendra Kusuma, M.Eng.</div>
+              <span class="text-[10px] text-slate-500">Senior Principal Checker</span>
+            </div>
+
+            <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+              <span class="text-slate-400 block font-sans">Disetujui Oleh:</span>
+              <span class="font-bold text-white block mt-1">Project Director / Klien</span>
+              <div class="h-16 flex items-center justify-center text-slate-600 italic">(Tanda Tangan)</div>
+              <div class="border-t border-slate-800 pt-2 text-slate-300 font-semibold">Bambang Wijaya, S.T.</div>
+              <span class="text-[10px] text-slate-500">Direktur Teknik &amp; Operasional</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODUL 6: KONVERTER SATUAN & FORMULARIUM SNI -->
+    <!-- ========================================================== -->
+    <section id="modul-converter" class="tab-content hidden">
+      <div class="mb-6 pb-4 border-b border-slate-800">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white">Konverter Satuan &amp; Formularium Standar SNI</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">Konversi real-time standar teknik sipil (SI &amp; Metrik) serta bank formula teknis SNI 2847, SNI 1725 &amp; SNI 1726.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Col Left: Converters (6 Cols) -->
+        <div class="lg:col-span-6 space-y-5">
+
+          <!-- Tegangan (MPa <-> kg/cm2) -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-3 flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+              <span>Tegangan &amp; Kuat Tekan (MPa &harr; kg/cm&sup2;)</span>
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Megapascal (MPa)</label>
+                <input type="number" id="conv_mpa" value="30" step="0.5"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">kg/cm&sup2; (Metrik)</label>
+                <input type="number" id="conv_kgcm2" value="305.91" step="1"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Gaya (kN <-> Ton force) -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-3 flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span>Beban &amp; Gaya Aksial (kN &harr; Ton force)</span>
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Kilonewton (kN)</label>
+                <input type="number" id="conv_kn" value="250" step="10"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Ton Force (tf)</label>
+                <input type="number" id="conv_ton" value="25.49" step="1"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Momen (kNm <-> Ton.m) -->
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-white mb-3 flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span>Momen Lentur (kNm &harr; Ton&middot;m)</span>
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Kilonewton-meter (kNm)</label>
+                <input type="number" id="conv_knm" value="450" step="10"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Ton&middot;meter (t&middot;m)</label>
+                <input type="number" id="conv_tonm" value="45.89" step="1"
+                  class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:ring-2 focus:ring-amber-500 outline-none">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Col Right: Formularium Lengkap SNI (6 Cols) -->
+        <div class="lg:col-span-6 space-y-4">
+          
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400 mb-3 flex items-center space-x-2">
+              <i class="fa-solid fa-book-bookmark"></i>
+              <span>Intisari Rumus SNI 2847:2019 (Beton)</span>
+            </h3>
+            <div class="space-y-2 text-xs font-mono text-slate-300">
+              <p>&bull; Ec = 4700 &times; &radic;f'c (MPa) [Beton Normal]</p>
+              <p>&bull; &beta;1 = 0.85 - 0.05 &times; (f'c - 28)/7 &nbsp; (0.65 &le; &beta;1 &le; 0.85)</p>
+              <p>&bull; a = (Ast &times; fy) / (0.85 &times; f'c &times; b)</p>
+              <p>&bull; &phi;Mn = &phi; &times; Ast &times; fy &times; (d - a/2)</p>
+              <p>&bull; Vc = 0.17 &times; (1 + Nu/(14Ag)) &times; &radic;f'c &times; b &times; d</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3 flex items-center space-x-2">
+              <i class="fa-solid fa-book-bookmark"></i>
+              <span>Intisari Rumus SNI 1725:2016 (Jembatan)</span>
+            </h3>
+            <div class="space-y-2 text-xs font-mono text-slate-300">
+              <p>&bull; DLA = 0.40 (L &le; 50m); DLA = 0.40 - 0.0025(L - 50) (50 &lt; L &lt; 90m)</p>
+              <p>&bull; Mmax = (qu &times; L&sup2;)/8 + (Pu &times; L)/4</p>
+              <p>&bull; Lendutan Izin Jembatan: &delta;ijin = L / 800</p>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center space-x-2">
+              <i class="fa-solid fa-book-bookmark"></i>
+              <span>Intisari Rumus SNI 1726:2019 (Gempa Seismik)</span>
+            </h3>
+            <div class="space-y-2 text-xs font-mono text-slate-300">
+              <p>&bull; SDS = 2/3 &times; Fa &times; Ss &nbsp;|&nbsp; SD1 = 2/3 &times; Fv &times; S1</p>
+              <p>&bull; Geser Dasar Seismik: V = Cs &times; W</p>
+              <p>&bull; Fx = (wx &times; hx^k) / &Sigma;(wi &times; hi^k) &times; V</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto border-t border-slate-800/80 bg-slate-950 py-6 text-slate-500 text-xs print:hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-bold text-slate-300">CivilStruct Pro Enterprise</span>
+        <span>&bull; Structural &amp; Bridge Engineering Suite</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span>SNI 2847:2019 &bull; SNI 1725:2016 &bull; SNI 1726:2019</span>
+        <span>&copy; 2026 CivilStruct Pro Enterprise</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT MODULES ENTERPRISE -->
+  <script src="js/beam-column.js"></script>
+  <script src="js/bridge-enterprise.js"></script>
+  <script src="js/cable-stayed.js"></script>
+  <script src="js/suspension-bridge.js"></script>
+  <script src="js/seismic-sni.js"></script>
+  <script src="js/bbs-mto.js"></script>
+  <script src="js/calc-sheet.js"></script>
+  <script src="js/converter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
